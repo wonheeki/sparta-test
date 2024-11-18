@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   InputContainer,
@@ -19,18 +19,26 @@ function App() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
+  useEffect(()=>{
+    console.log(todos)
+  },[todos])
+
   const onAddTodo = () => {
     /**
      * 시험 문제 1.
      * 이곳에서 추가하기 기능을 구현해주세요.
      */
-  };
+    dispatch(__addToDo({id,title,body}))
+    resetInputs()
+    };
 
   const onDeleteTodo = (id) => {
     /**
      * 시험 문제 2.
      * 이곳에서 삭제하기 기능을 구현해주세요.
      */
+    dispatch(__deleteTodo(id))
+    resetInputs()
   };
 
   const resetInputs = () => {
@@ -60,14 +68,16 @@ function App() {
             onChange={onChangeBody}
           />
 
-          <Button>+ 추가하기</Button>
+          <Button onClick={onAddTodo}>+ 추가하기</Button>
         </InputContainer>
         <TodoListContainer>
           {todos.map((todo) => (
             <TodoCard key={todo.id}>
               <span>제목: {todo.title}</span>
               <span>할 일: {todo.body}</span>
-              <Button>삭제하기</Button>
+              <Button onClick={()=>{
+                onDeleteTodo(todo.id)
+              }}>삭제하기</Button>
             </TodoCard>
           ))}
         </TodoListContainer>
